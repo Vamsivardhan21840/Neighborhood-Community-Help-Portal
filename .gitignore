@@ -1,0 +1,21 @@
+# Dependencies
+node_modules/
+dist/
+.angular/
+.DS_Store
+
+# Backend
+backend/dist/
+backend/node_modules/
+backend/uploads/
+backend/.env
+
+# Frontend
+frontend/dist/
+frontend/node_modules/
+frontend/.angular/
+
+# IDE
+.vscode/
+*.swp
+*.log
