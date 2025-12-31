@@ -1,0 +1,23 @@
+.list-container {
+    padding: 20px;
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.request-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.status-text {
+    font-weight: bold;
+    color: #666;
+    margin-left: 8px;
+}

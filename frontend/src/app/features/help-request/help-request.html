@@ -1,0 +1,40 @@
+<div class="request-container">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Post a Help Request</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <form [formGroup]="requestForm" (ngSubmit)="onSubmit()">
+                <mat-form-field class="full-width">
+                    <mat-label>Title</mat-label>
+                    <input matInput formControlName="title" placeholder="Broken pipe">
+                </mat-form-field>
+
+                <mat-form-field class="full-width">
+                    <mat-label>Category</mat-label>
+                    <mat-select formControlName="category">
+                        <mat-option value="Plumbing">Plumbing</mat-option>
+                        <mat-option value="Grocery">Grocery</mat-option>
+                        <mat-option value="Tutoring">Tutoring</mat-option>
+                        <mat-option value="Other">Other</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="full-width">
+                    <mat-label>Description</mat-label>
+                    <textarea matInput formControlName="description" rows="4"></textarea>
+                </mat-form-field>
+
+                <div class="file-upload">
+                    <label for="fileInput">Attachment (Image)</label>
+                    <input type="file" id="fileInput" (change)="onFileSelected($event)" accept="image/*">
+                    <img *ngIf="requestForm.get('attachments')?.value" [src]="requestForm.get('attachments')?.value"
+                        style="max-width: 100px; margin-top: 10px; display: block;">
+                </div>
+
+                <button mat-raised-button color="primary" type="submit" [disabled]="requestForm.invalid">Submit
+                    Request</button>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

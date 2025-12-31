@@ -1,0 +1,37 @@
+<mat-toolbar color="primary" class="main-navbar">
+    <div class="logo-container" routerLink="/">
+        <mat-icon>location_city</mat-icon>
+        <span class="logo-text">Neighborhood Help</span>
+    </div>
+    <span class="spacer"></span>
+
+    <ng-container *ngIf="isLoggedIn; else guestLinks">
+        <!-- Helper Only Links -->
+        <button mat-button *ngIf="!isResident" routerLink="/requests">
+            <mat-icon style="margin-right: 4px;">explore</mat-icon> Marketplace
+        </button>
+
+        <!-- Resident Only Links -->
+        <button mat-button *ngIf="isResident" routerLink="/requests/new">
+            <mat-icon style="margin-right: 4px;">add_circle</mat-icon> Post Request
+        </button>
+
+        <!-- Common Links -->
+        <button mat-button routerLink="/dashboard">
+            <mat-icon style="margin-right: 4px;">dashboard</mat-icon> {{ isResident ? 'My Requests' : 'My Tasks' }}
+        </button>
+
+        <button mat-icon-button routerLink="/profile" matTooltip="Profile">
+            <mat-icon>account_circle</mat-icon>
+        </button>
+
+        <button mat-button (click)="logout()" class="logout-btn">
+            Logout <span>({{ userName }})</span>
+        </button>
+    </ng-container>
+
+    <ng-template #guestLinks>
+        <button mat-button routerLink="/login">Login</button>
+        <button mat-button routerLink="/register">Register</button>
+    </ng-template>
+</mat-toolbar>

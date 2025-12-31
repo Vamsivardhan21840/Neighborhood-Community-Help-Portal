@@ -1,0 +1,19 @@
+.profile-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+mat-card {
+    width: 500px;
+}
+
+.full-width {
+    width: 100%;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}

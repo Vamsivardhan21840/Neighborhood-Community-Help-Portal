@@ -1,0 +1,27 @@
+<div class="status-container" *ngIf="request">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Request Status: {{ request.title }}</mat-card-title>
+            <mat-card-subtitle>{{ request.category }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <div class="status-timeline">
+                <div class="step" [class.active]="currentStep >= 1">1. Pending</div>
+                <div class="step" [class.active]="currentStep >= 2">2. Accepted</div>
+                <div class="step" [class.active]="currentStep >= 3">3. In-progress</div>
+                <div class="step" [class.active]="currentStep >= 4">4. Completed</div>
+            </div>
+
+            <p><strong>Description:</strong> {{ request.description }}</p>
+            <p><strong>Current Status:</strong> <mat-chip>{{ request.status }}</mat-chip></p>
+            <p *ngIf="request.helper_id"><strong>Helper ID:</strong> {{ request.helper_id }}</p>
+
+            <div *ngIf="canUpdateStatus" class="actions">
+                <button mat-raised-button color="primary" *ngIf="request.status === 'Accepted'"
+                    (click)="updateStatus('In-progress')">Start Work</button>
+                <button mat-raised-button color="warn" *ngIf="request.status === 'In-progress'"
+                    (click)="updateStatus('Completed')">Mark Completed</button>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

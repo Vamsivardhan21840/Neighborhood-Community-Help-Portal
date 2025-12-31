@@ -1,0 +1,74 @@
+<div class="list-container" style="padding: 24px; max-width: 1200px; margin: 0 auto;"
+    *ngIf="isHelper; else residentForbidden">
+    <div class="header-row" style="margin-bottom: 30px; border-bottom: 2px solid #eee; padding-bottom: 15px;">
+        <h1 style="font-weight: 800; color: #2e7d32; display: flex; align-items: center;">
+            <mat-icon style="margin-right: 12px; font-size: 32px; width: 32px; height: 32px;">explore</mat-icon>
+            Community Marketplace
+        </h1>
+        <p style="color: #666;">Browse requests from your neighbors and lend a hand!</p>
+    </div>
+
+    <div class="cards-grid"
+        style="display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 24px;">
+        <mat-card *ngFor="let req of requests" class="premium-card">
+            <div style="height: 6px; background: #2e7d32;" *ngIf="req.status === 'Pending'"></div>
+            <mat-card-header style="padding-top: 16px;">
+                <div mat-card-avatar
+                    style="background-color: #e8f5e9; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                    <mat-icon color="accent">volunteer_activism</mat-icon>
+                </div>
+                <mat-card-title style="font-weight: 700;">{{ req.title }}</mat-card-title>
+                <mat-card-subtitle>{{ req.category }} • By {{ req.resident_name }}</mat-card-subtitle>
+            </mat-card-header>
+
+            <mat-card-content style="margin-top: 12px;">
+                <p style="color: #444; min-height: 60px;">{{ req.description }}</p>
+
+                <div *ngIf="req.attachments" style="margin: 15px 0;">
+                    <img *ngIf="isImage(req.attachments); else link" [src]="req.attachments"
+                        style="width: 100%; height: 180px; object-fit: cover; border-radius: 8px;">
+                    <ng-template #link>
+                        <a [href]="req.attachments" target="_blank" class="attachment-link">
+                            <mat-icon style="font-size: 18px; vertical-align: middle;">link</mat-icon> View Attachment
+                        </a>
+                    </ng-template>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
+                    <span class="timestamp" style="font-size: 0.8em; color: #999;">
+                        Posted {{ req.created_at | date:'mediumDate' }}
+                    </span>
+                    <mat-chip-set>
+                        <mat-chip highlighted color="accent" *ngIf="req.status === 'Pending'">OPEN</mat-chip>
+                        <mat-chip *ngIf="req.status !== 'Pending'">{{ req.status }}</mat-chip>
+                    </mat-chip-set>
+                </div>
+            </mat-card-content>
+
+            <mat-card-actions align="end" style="padding: 16px;">
+                <button mat-raised-button color="primary" *ngIf="req.status === 'Pending'" (click)="acceptRequest(req)">
+                    <mat-icon>check</mat-icon> I can help!
+                </button>
+                <button mat-button color="warn" *ngIf="req.status === 'Pending'"
+                    (click)="declineRequest(req)">Skip</button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+
+    <div *ngIf="requests.length === 0" style="text-align: center; padding: 80px 0;">
+        <mat-icon style="font-size: 80px; color: #e0e0e0; width: 80px; height: 80px;">mood_bad</mat-icon>
+        <h2 style="color: #999;">Quiet neighborhood! No pending requests.</h2>
+    </div>
+</div>
+
+<ng-template #residentForbidden>
+    <div style="text-align: center; padding: 100px 20px;">
+        <mat-icon style="font-size: 100px; color: #f44336; width: 100px; height: 100px;">lock</mat-icon>
+        <h1 style="font-weight: 800;">Marketplace is for Helpers</h1>
+        <p style="color: #666; max-width: 500px; margin: 0 auto 30px;">
+            As a Resident, you can post your own requests and track their progress from your dashboard.
+            The marketplace is where awesome neighbors go to volunteer!
+        </p>
+        <button mat-raised-button color="primary" routerLink="/dashboard">Go to My Dashboard</button>
+    </div>
+</ng-template>
