@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService, HelpRequest } from '../../core/services/api.service';
 import { AuthService } from '../../core/services/auth.service';
@@ -20,7 +20,8 @@ export class RequestStatus implements OnInit {
     private route: ActivatedRoute,
     private apiService: ApiService,
     private authService: AuthService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
@@ -32,13 +33,15 @@ export class RequestStatus implements OnInit {
   }
 
   loadRequest(id: number) {
-    // For now we reuse getAll and filter, or we could add getById API
-    // To be efficient let's assume we implement getRequestById in API or filter locally
-    this.apiService.getAllRequests().subscribe(requests => {
-      this.request = requests.find(r => r.id === id) || null;
-      if (this.request) {
+    this.apiService.getRequestById(id).subscribe({
+      next: (request) => {
+        this.request = request;
         this.updateStep();
         this.checkPermissions();
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.snackBar.open('Error loading request details', 'Close', { duration: 3000 });
       }
     });
   }

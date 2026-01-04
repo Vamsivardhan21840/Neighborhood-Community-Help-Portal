@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { ApiService, HelpRequest } from '../../core/services/api.service';
 import { AuthService } from '../../core/services/auth.service';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { filter, Subscription, take } from 'rxjs';
 
 @Component({
   selector: 'app-request-list',
@@ -15,8 +16,10 @@ export class RequestList implements OnInit {
   currentUser: any;
   isHelper = false;
   isResident = false;
+  private routerSub: Subscription | undefined;
+
   ngOnInit() {
-    this.authService.currentUser$.subscribe(user => {
+    this.authService.currentUser$.pipe(take(1)).subscribe(user => {
       this.currentUser = user;
       this.isHelper = user?.role === 'Helper';
       this.isResident = user?.role === 'Resident';
@@ -26,20 +29,36 @@ export class RequestList implements OnInit {
         this.router.navigate(['/dashboard']);
       }
     });
+
     this.loadRequests();
+
+    // Listen for navigation events to refresh data (handles double-click/tab switching)
+    this.routerSub = this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      this.loadRequests();
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.routerSub) {
+      this.routerSub.unsubscribe();
+    }
   }
 
   constructor(
     private apiService: ApiService,
     private authService: AuthService,
     private snackBar: MatSnackBar,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) { }
 
   loadRequests() {
     this.apiService.getAllRequests().subscribe(data => {
       // Show ONLY Pending requests in Marketplace
       this.requests = data.filter(r => r.status === 'Pending');
+      this.cdr.detectChanges();
     });
   }
 

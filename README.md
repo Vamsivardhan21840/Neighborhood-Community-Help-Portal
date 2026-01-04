@@ -1,4 +1,4 @@
-# Neighborhood Community Help Portal
+﻿# Neighborhood Community Help Portal
 
 A secure, role-based platform designed to connect people in the neighborhood who need help (Residents) with those willing to provide it (Helpers).
 
@@ -93,3 +93,43 @@ A secure, role-based platform designed to connect people in the neighborhood who
 - `/backend`: Express API, JWT middleware, DB controllers.
 - `/frontend`: Angular components, AuthService, Route Guards.
 - `schema.sql`: Initial database definitions.
+
+
+
+
+LOGIN PAGE :
+
+
+
+
+
+
+
+
+
+
+
+NEW USE
+
+
+USER HELP REQUESTS :
+
+
+
+
+USER HELP FORM: 
+
+
+Helper Interface :
+
+
+
+
+Helper Tasks given by user UI :
+
+
+
+
+
+
+

@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiService } from '../../core/services/api.service';
 import { AuthService } from '../../core/services/auth.service';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { filter, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-help-request',
@@ -14,6 +15,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class HelpRequest implements OnInit {
   requestForm: FormGroup;
   currentUser: any;
+  private routerSub: Subscription | undefined;
 
   constructor(
     private fb: FormBuilder,
@@ -38,6 +40,19 @@ export class HelpRequest implements OnInit {
         this.router.navigate(['/requests']);
       }
     });
+
+    // Reset form on navigation to this component (handles tab switching)
+    this.routerSub = this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      this.requestForm.reset();
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.routerSub) {
+      this.routerSub.unsubscribe();
+    }
   }
 
   onFileSelected(event: any) {

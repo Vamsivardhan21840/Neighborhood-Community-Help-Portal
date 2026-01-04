@@ -1,6 +1,6 @@
 <div class="dashboard-container" style="padding: 24px; max-width: 1200px; margin: 0 auto;">
     <div class="header" style="margin-bottom: 24px;">
-        <h1 style="font-weight: 700; color: #1a237e;">
+        <h1 style="font-weight: 700; color: var(--primary-dark);">
             <mat-icon style="vertical-align: middle; margin-right: 8px;">{{ isResident ? 'person_pin' : 'handshake'
                 }}</mat-icon>
             {{ userRole === 'Resident' ? 'My Help Requests' : 'Tasks I Am Helping With' }}
@@ -13,7 +13,7 @@
         <mat-card *ngFor="let req of myRequests" class="premium-card">
             <mat-card-header>
                 <div mat-card-avatar
-                    style="background-color: #e8eaf6; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                    style="background-color: var(--primary-light); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
                     <mat-icon color="primary">{{ getIcon(req.category) }}</mat-icon>
                 </div>
                 <mat-card-title>{{ req.title }}</mat-card-title>

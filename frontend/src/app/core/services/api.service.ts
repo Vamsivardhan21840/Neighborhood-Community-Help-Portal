@@ -33,6 +33,10 @@ export class ApiService {
         return this.http.get<HelpRequest[]>(`${this.apiUrl}/my`);
     }
 
+    getRequestById(id: number): Observable<HelpRequest> {
+        return this.http.get<HelpRequest>(`${this.apiUrl}/${id}`);
+    }
+
     createRequest(request: any): Observable<any> {
         return this.http.post(this.apiUrl, request);
     }

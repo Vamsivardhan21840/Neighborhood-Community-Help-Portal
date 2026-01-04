@@ -40,7 +40,7 @@ export const register = async (req: Request, res: Response) => {
             token
         });
     } catch (error) {
-        console.error(error);
+        console.error('Registration ERROR:', error);
         res.status(500).json({ message: 'Server error during registration' });
     }
 };
@@ -64,6 +64,7 @@ export const login = async (req: Request, res: Response) => {
 
         const user = rows[0];
         const isMatch = await bcrypt.compare(password, user.password);
+
         if (!isMatch) {
             return res.status(401).json({ message: 'Invalid credentials' });
         }

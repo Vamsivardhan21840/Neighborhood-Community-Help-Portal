@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { ApiService, HelpRequest } from '../../core/services/api.service';
 import { AuthService } from '../../core/services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router, NavigationEnd } from '@angular/router';
+import { filter, Subscription, take } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,17 +20,34 @@ export class Dashboard implements OnInit {
   constructor(
     private apiService: ApiService,
     private authService: AuthService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) { }
 
+  private routerSub: Subscription | undefined;
+
   ngOnInit() {
-    this.authService.currentUser$.subscribe(user => {
+    this.authService.currentUser$.pipe(take(1)).subscribe(user => {
       if (user) {
         this.currentUser = user;
         this.userRole = user.role;
         this.loadMyRequests();
       }
     });
+
+    // Listen for navigation events to refresh data (handles double-click/tab switching)
+    this.routerSub = this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      this.loadMyRequests();
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.routerSub) {
+      this.routerSub.unsubscribe();
+    }
   }
 
   loadMyRequests() {
@@ -36,6 +55,7 @@ export class Dashboard implements OnInit {
     this.apiService.getMyRequests().subscribe(data => {
       console.log('My Requests data:', data);
       this.myRequests = data;
+      this.cdr.detectChanges();
     });
   }
 

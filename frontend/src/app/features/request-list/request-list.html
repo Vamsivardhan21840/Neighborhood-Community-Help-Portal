@@ -1,7 +1,7 @@
 <div class="list-container" style="padding: 24px; max-width: 1200px; margin: 0 auto;"
     *ngIf="isHelper; else residentForbidden">
     <div class="header-row" style="margin-bottom: 30px; border-bottom: 2px solid #eee; padding-bottom: 15px;">
-        <h1 style="font-weight: 800; color: #2e7d32; display: flex; align-items: center;">
+        <h1 style="font-weight: 800; color: var(--primary-dark); display: flex; align-items: center;">
             <mat-icon style="margin-right: 12px; font-size: 32px; width: 32px; height: 32px;">explore</mat-icon>
             Community Marketplace
         </h1>
@@ -11,10 +11,10 @@
     <div class="cards-grid"
         style="display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 24px;">
         <mat-card *ngFor="let req of requests" class="premium-card">
-            <div style="height: 6px; background: #2e7d32;" *ngIf="req.status === 'Pending'"></div>
+            <div style="height: 6px; background: var(--primary-color);" *ngIf="req.status === 'Pending'"></div>
             <mat-card-header style="padding-top: 16px;">
                 <div mat-card-avatar
-                    style="background-color: #e8f5e9; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                    style="background-color: var(--primary-light); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
                     <mat-icon color="accent">volunteer_activism</mat-icon>
                 </div>
                 <mat-card-title style="font-weight: 700;">{{ req.title }}</mat-card-title>
@@ -46,6 +46,7 @@
             </mat-card-content>
 
             <mat-card-actions align="end" style="padding: 16px;">
+                <button mat-button color="primary" [routerLink]="['/requests', req.id, 'status']">View Details</button>
                 <button mat-raised-button color="primary" *ngIf="req.status === 'Pending'" (click)="acceptRequest(req)">
                     <mat-icon>check</mat-icon> I can help!
                 </button>

@@ -118,3 +118,37 @@ export const getMyRequests = async (req: AuthRequest, res: Response) => {
         res.status(500).json({ message: 'Server error fetching your requests' });
     }
 }
+// Get a single request by ID
+export const getRequestById = async (req: AuthRequest, res: Response) => {
+    try {
+        const { id } = req.params;
+        const userId = req.user?.id;
+        const role = req.user?.role;
+
+        const [rows] = await pool.execute<RowDataPacket[]>(
+            `SELECT hr.*, u1.name as resident_name, u2.name as helper_name 
+             FROM HelpRequests hr 
+             JOIN Users u1 ON hr.resident_id = u1.id 
+             LEFT JOIN Users u2 ON hr.helper_id = u2.id 
+             WHERE hr.id = ?`,
+            [id]
+        );
+
+        if (rows.length === 0) {
+            return res.status(404).json({ message: 'Request not found' });
+        }
+
+        const request = rows[0];
+
+        // Authorization check: only the resident who created it or the assigned helper (or any helper if it's pending?)
+        // Actually, for community portal, maybe helpers can see details of pending ones too.
+        if (role === 'Resident' && request.resident_id !== userId) {
+            return res.status(403).json({ message: 'Unauthorized' });
+        }
+
+        res.json(request);
+    } catch (error) {
+        console.error('getRequestById ERROR:', error);
+        res.status(500).json({ message: 'Server error fetching request details' });
+    }
+};
