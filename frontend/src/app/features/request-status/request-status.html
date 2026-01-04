@@ -13,6 +13,7 @@
             </div>
 
             <p><strong>Description:</strong> {{ request.description }}</p>
+            <p><strong>Address:</strong> {{ request.address }}</p>
             <p><strong>Current Status:</strong> <mat-chip>{{ request.status }}</mat-chip></p>
             <p *ngIf="request.helper_id"><strong>Helper ID:</strong> {{ request.helper_id }}</p>
 

@@ -23,6 +23,10 @@
 
             <mat-card-content style="margin-top: 12px;">
                 <p style="color: #444; min-height: 60px;">{{ req.description }}</p>
+                <p style="color: #666; font-size: 0.9em; display: flex; align-items: center; margin-bottom: 15px;">
+                    <mat-icon style="font-size: 18px; width: 18px; height: 18px; margin-right: 8px;">place</mat-icon>
+                    <strong>Location:</strong>&nbsp;{{ req.address }}
+                </p>
 
                 <div *ngIf="req.attachments" style="margin: 15px 0;">
                     <img *ngIf="isImage(req.attachments); else link" [src]="req.attachments"

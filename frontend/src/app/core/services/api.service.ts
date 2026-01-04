@@ -9,6 +9,7 @@ export interface HelpRequest {
     title: string;
     description?: string;
     category: string;
+    address: string;
     status: 'Pending' | 'Accepted' | 'In-progress' | 'Completed';
     attachments?: string;
     created_at?: string;

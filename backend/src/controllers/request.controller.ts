@@ -6,16 +6,16 @@ import { AuthRequest } from '../middleware/auth.middleware';
 // Post a help request
 export const createRequest = async (req: AuthRequest, res: Response) => {
     try {
-        const { title, description, category, attachments } = req.body;
+        const { title, description, category, address, attachments } = req.body;
         const resident_id = req.user?.id;
 
-        if (!resident_id || !title || !category) {
+        if (!resident_id || !title || !category || !address) {
             return res.status(400).json({ message: 'Missing required fields' });
         }
 
         const [result] = await pool.execute<ResultSetHeader>(
-            'INSERT INTO HelpRequests (resident_id, title, description, category, attachments, status) VALUES (?, ?, ?, ?, ?, ?)',
-            [resident_id, title, description, category, attachments || null, 'Pending']
+            'INSERT INTO HelpRequests (resident_id, title, description, category, address, attachments, status) VALUES (?, ?, ?, ?, ?, ?, ?)',
+            [resident_id, title, description, category, address, attachments || null, 'Pending']
         );
 
         res.status(201).json({

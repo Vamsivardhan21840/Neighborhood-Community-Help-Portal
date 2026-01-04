@@ -32,6 +32,7 @@ CREATE TABLE IF NOT EXISTS HelpRequests (
     title VARCHAR(255) NOT NULL,
     description TEXT,
     category VARCHAR(100) NOT NULL,
+    address VARCHAR(255) NOT NULL,
 
     status ENUM('Pending', 'Accepted', 'In-progress', 'Completed')
         DEFAULT 'Pending',

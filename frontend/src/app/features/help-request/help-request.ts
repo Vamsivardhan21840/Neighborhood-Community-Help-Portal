@@ -27,6 +27,7 @@ export class HelpRequest implements OnInit {
     this.requestForm = this.fb.group({
       title: ['', Validators.required],
       category: ['', Validators.required],
+      address: ['', Validators.required],
       description: [''],
       attachments: ['']
     });
